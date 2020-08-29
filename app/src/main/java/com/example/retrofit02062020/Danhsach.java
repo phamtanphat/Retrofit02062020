@@ -13,4 +13,11 @@ public class Danhsach {
     public void setKhoahoc(String khoahoc) {
         this.khoahoc = khoahoc;
     }
+
+    @Override
+    public String toString() {
+        return "Danhsach{" +
+                "khoahoc='" + khoahoc + '\'' +
+                '}';
+    }
 }

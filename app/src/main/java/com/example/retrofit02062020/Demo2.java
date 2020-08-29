@@ -14,4 +14,10 @@ public class Demo2 {
         this.danhsach = danhsach;
     }
 
+    @Override
+    public String toString() {
+        return "Demo2{" +
+                "danhsach=" + danhsach +
+                '}';
+    }
 }

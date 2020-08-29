@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ApiRequest apiRequest = retrofit.create(ApiRequest.class);
 
 
+        getDataDemo2(apiRequest);
     }
     private void getDataDemo1(ApiRequest apiRequest){
         Call<Demo1> callbackDemo1 = apiRequest.getDataDemo1();
@@ -66,6 +67,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Demo1> call, Throwable t) {
+                Log.d("BBB",t.getMessage());
+            }
+        });
+    }
+    private void getDataDemo2(ApiRequest apiRequest){
+        Call<Demo2> callbackDemo2 = apiRequest.getDataDemo2();
+
+        callbackDemo2.enqueue(new Callback<Demo2>() {
+            @Override
+            public void onResponse(Call<Demo2> call, Response<Demo2> response) {
+                Demo2 demo2 = response.body();
+                Log.d("BBB",demo2.toString());
+            }
+
+            @Override
+            public void onFailure(Call<Demo2> call, Throwable t) {
                 Log.d("BBB",t.getMessage());
             }
         });
