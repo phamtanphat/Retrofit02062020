@@ -52,13 +52,16 @@ public class MainActivity extends AppCompatActivity {
 
         ApiRequest apiRequest = retrofit.create(ApiRequest.class);
 
+
+    }
+    private void getDataDemo1(ApiRequest apiRequest){
         Call<Demo1> callbackDemo1 = apiRequest.getDataDemo1();
 
         callbackDemo1.enqueue(new Callback<Demo1>() {
             @Override
             public void onResponse(Call<Demo1> call, Response<Demo1> response) {
                 Demo1 demo1 = response.body();
-                Log.d("BBB",demo1.toString());
+                Log.d("BBB",demo1.toString() + " 1");
             }
 
             @Override
@@ -66,6 +69,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("BBB",t.getMessage());
             }
         });
-
     }
 }
