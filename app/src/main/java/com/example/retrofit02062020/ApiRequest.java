@@ -14,6 +14,9 @@ public interface ApiRequest {
     Call<Demo2> getDataDemo2();
 
 
-    @POST("portal/auth/login") @FormUrlEncoded
-    Call<ResponseApi> login(@Field("email") String email , @Field("password")String password);
+    @FormUrlEncoded
+    @POST("portal/auth/login")
+    Call<ResponseApi> login(
+            @Field("email") String email ,
+            @Field("password")String password);
 }

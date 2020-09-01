@@ -55,10 +55,9 @@ public class MainActivity extends AppCompatActivity {
                                             request
                                                     .newBuilder()
                                                     .addHeader("Authorization","Bearer " + token);
-                                            return chain.proceed(request);
-                                        }else{
-                                            return null;
+
                                         }
+                                        return chain.proceed(request);
                                     }
                                 })
                                 .build();
@@ -72,7 +71,23 @@ public class MainActivity extends AppCompatActivity {
         ApiRequest apiRequest = retrofit.create(ApiRequest.class);
 
 
+        Call<ResponseApi> callbackLogin = apiRequest.login("admin@boldwolf.com","L6mSCFub72LX26cT");
+        callbackLogin.enqueue(new Callback<ResponseApi>() {
+            @Override
+            public void onResponse(Call<ResponseApi> call, Response<ResponseApi> response) {
+                ResponseApi responseApi = response.body();
+                if (responseApi != null){
+                    editor = sharedPreferences.edit();
+                    editor.putString("tokenapp",responseApi.getData().getToken());
+                    editor.apply();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ResponseApi> call, Throwable t) {
+
+            }
+        });
     }
     private void getDataDemo1(ApiRequest apiRequest){
         Call<Demo1> callbackDemo1 = apiRequest.getDataDemo1();
