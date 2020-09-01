@@ -1,5 +1,7 @@
 package com.example.retrofit02062020;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -19,4 +21,7 @@ public interface ApiRequest {
     Call<ResponseApi> login(
             @Field("email") String email ,
             @Field("password")String password);
+
+    @GET("portal/tour")
+    Call<Object> getTour();
 }

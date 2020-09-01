@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -52,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
                                     public okhttp3.Response intercept(Chain chain) throws IOException {
                                         Request request = chain.request();
                                         if (!token.isEmpty()){
-                                            request
+                                            request = request
                                                     .newBuilder()
-                                                    .addHeader("Authorization","Bearer " + token);
+                                                    .addHeader("Authorization","Bearer " + token).build();
 
                                         }
                                         return chain.proceed(request);
@@ -70,24 +71,21 @@ public class MainActivity extends AppCompatActivity {
 
         ApiRequest apiRequest = retrofit.create(ApiRequest.class);
 
-
-        Call<ResponseApi> callbackLogin = apiRequest.login("admin@boldwolf.com","L6mSCFub72LX26cT");
-        callbackLogin.enqueue(new Callback<ResponseApi>() {
+        Call<Object> callBackTour = apiRequest.getTour();
+        callBackTour.enqueue(new Callback<Object>() {
             @Override
-            public void onResponse(Call<ResponseApi> call, Response<ResponseApi> response) {
-                ResponseApi responseApi = response.body();
-                if (responseApi != null){
-                    editor = sharedPreferences.edit();
-                    editor.putString("tokenapp",responseApi.getData().getToken());
-                    editor.apply();
-                }
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Object object = response.body();
+                Log.d("BBB",object.toString());
             }
 
             @Override
-            public void onFailure(Call<ResponseApi> call, Throwable t) {
+            public void onFailure(Call<Object> call, Throwable t) {
 
             }
         });
+
+
     }
     private void getDataDemo1(ApiRequest apiRequest){
         Call<Demo1> callbackDemo1 = apiRequest.getDataDemo1();
@@ -118,6 +116,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Demo2> call, Throwable t) {
                 Log.d("BBB",t.getMessage());
+            }
+        });
+    }
+    private void login(ApiRequest apiRequest){
+        Call<ResponseApi> callbackLogin = apiRequest.login("admin@boldwolf.com","L6mSCFub72LX26cT");
+        callbackLogin.enqueue(new Callback<ResponseApi>() {
+            @Override
+            public void onResponse(Call<ResponseApi> call, Response<ResponseApi> response) {
+                ResponseApi responseApi = response.body();
+                if (responseApi != null){
+                    editor = sharedPreferences.edit();
+                    editor.putString("tokenapp",responseApi.getData().getToken());
+                    editor.apply();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseApi> call, Throwable t) {
+
             }
         });
     }
