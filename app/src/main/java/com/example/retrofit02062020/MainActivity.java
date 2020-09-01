@@ -2,6 +2,7 @@ package com.example.retrofit02062020;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,12 +26,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Buoc 1 : Khoi tao retrofit
 
+        sharedPreferences = getSharedPreferences("Token",MODE_PRIVATE);
+        token = sharedPreferences.getString("tokenapp","");
         // Gson
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
@@ -40,12 +47,26 @@ public class MainActivity extends AppCompatActivity {
                                 .connectTimeout(30 , TimeUnit.SECONDS)
                                 .retryOnConnectionFailure(true)
                                 .protocols(Arrays.asList(Protocol.HTTP_1_1))
+                                .addInterceptor(new Interceptor() {
+                                    @Override
+                                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                                        Request request = chain.request();
+                                        if (!token.isEmpty()){
+                                            request
+                                                    .newBuilder()
+                                                    .addHeader("Authorization","Bearer " + token);
+                                            return chain.proceed(request);
+                                        }else{
+                                            return null;
+                                        }
+                                    }
+                                })
                                 .build();
 
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("https://khoapham.vn/")
+                            .baseUrl("http://54.151.199.176/")
                             .addConverterFactory(GsonConverterFactory.create(gson))
                             .client(okHttpClient)
                             .build();
