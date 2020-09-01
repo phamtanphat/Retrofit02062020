@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         ApiRequest apiRequest = retrofit.create(ApiRequest.class);
 
 
-        getDataDemo2(apiRequest);
+
     }
     private void getDataDemo1(ApiRequest apiRequest){
         Call<Demo1> callbackDemo1 = apiRequest.getDataDemo1();
