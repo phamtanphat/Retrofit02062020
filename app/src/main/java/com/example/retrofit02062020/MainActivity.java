@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
                                 })
                                 .build();
 
-
-
         Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://54.151.199.176/")
                             .addConverterFactory(GsonConverterFactory.create(gson))
